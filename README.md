@@ -1,4 +1,4 @@
-## ROS2 Assignment 1 - Publisher/Subscriber
+## ROS2 Assignment 2 
 
 'beginner_tutorials' package created as part of ROS2 programming assignments.
 

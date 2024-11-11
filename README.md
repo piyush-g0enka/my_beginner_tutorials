@@ -1,5 +1,8 @@
-#### build
+#### Build package
+
 ```bash
+# First clone the package into your ros2_ws
+
 # Run below command from workspace directory
 $ colcon build --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 ```

@@ -7,6 +7,18 @@
 $ colcon build --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 ```
 
+#### Run package
+
+##### Talker
+```bash
+$ ros2 run beginner_tutorials talker
+```
+
+##### Listener
+```bash
+$ ros2 run beginner_tutorials listener
+```
+
 #### cpplint
 ```bash
 # Run below command from package directory

@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-## ROS2 Assignment 2 
-=======
 ## ROS2 Assignment 2 - Services/Parameters/Launch files
->>>>>>> ros_pub_sub
+
 
 'beginner_tutorials' package created as part of ROS2 programming assignments.
 

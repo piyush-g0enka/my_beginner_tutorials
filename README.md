@@ -1,3 +1,15 @@
+## ROS2 Assignment 1 - Publisher/Subscriber
+
+'beginner_tutorials' package created as part of ROS2 programming assignments.
+
+In the ros_pub_sub branch, the publisher (talker) publishes a custom message "Hello from ROS2"
+
+#### Dependencies
+1. ROS2 Humble
+2. C++17
+3. Git
+
+
 #### Build package
 
 ```bash

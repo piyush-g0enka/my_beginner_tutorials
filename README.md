@@ -1,8 +1,8 @@
-## ROS2 Assignment 1 - Publisher/Subscriber
+## ROS2 Assignment 2 - Services/Parameters/Launch files
 
 'beginner_tutorials' package created as part of ROS2 programming assignments.
 
-In the ros_pub_sub branch, the publisher (talker) publishes a custom message "Hello from ROS2"
+In the ros_services_logging_launch branch....
 
 #### Dependencies
 1. ROS2 Humble
@@ -45,4 +45,16 @@ $ ln -s ~/<path-to-ros2_ws>/build/beginner_tutorials/compile_commands.json ~/<pa
 
 # Get clang-tidy output
 $ clang-tidy -p compile_commands.json --extra-arg=-std=c++17 src/talker.cpp src/listener.cpp
+```
+
+#### change string service
+```bash
+
+# Initially the talker node will output "I'm not set" string in /chatter topic
+
+# To change string to "I'm publishing FLASE" run below service call
+$ ros2 service call /string_changer example_interfaces/srv/SetBool "data: false"
+
+# To change string to "I'm publishing TRUE" run below service call
+$ ros2 service call /string_changer example_interfaces/srv/SetBool "data: true"
 ```

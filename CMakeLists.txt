@@ -9,13 +9,13 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
-
+find_package(example_interfaces REQUIRED)
 
 add_executable(talker src/talker.cpp)
 
 add_executable(listener src/listener.cpp)
 
-ament_target_dependencies(talker rclcpp std_msgs)
+ament_target_dependencies(talker rclcpp std_msgs example_interfaces)
 ament_target_dependencies(listener rclcpp std_msgs)
 
 
@@ -28,6 +28,12 @@ install(TARGETS
 install(DIRECTORY 
   include/
   DESTINATION include/${PROJECT_NAME}/
+)
+
+# Install launch files
+install(DIRECTORY
+  launch/
+  DESTINATION share/${PROJECT_NAME}/launch
 )
 
 ament_package()

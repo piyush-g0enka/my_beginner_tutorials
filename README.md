@@ -1,9 +1,14 @@
-## ROS2 Assignment 2 - Services/Parameters/Launch files
+## ROS2 Assignment 2 - Services/Logging/Launch files
 
 
 'beginner_tutorials' package created as part of ROS2 programming assignments.
 
-In the ros_services_logging_launch branch....
+In the ros_services_logging_launch branch we implement code for ros services, logging, parameterisation and launch files.
+
+Here, the talker node publishes a string to chatter topic whose publish frequency can be set via command line argument to launch file.
+The talker node also contains a service which changes the value of the string being published.
+
+The listener node outputs the string in the chatter with different log levels.
 
 #### Dependencies
 1. ROS2 Humble
@@ -28,9 +33,7 @@ $ colcon build --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 $ ros2 launch beginner_tutorials nodes.launch.py publish_frequency:=5.4
 ```
 
-
-
-##### change string service
+##### Call a service that changes the string published to the chatter topic
 ```bash
 
 # Initially the talker node will output "I'm not set" string in /chatter topic
@@ -55,5 +58,5 @@ $ cpplint --filter=-build/c++11,+build/c++17,-build/namespaces,-build/include_or
 $ ln -s ~/<path-to-ros2_ws>/build/beginner_tutorials/compile_commands.json ~/<path-to-ros2_ws>/src/beginner_tutorials
 
 # Get clang-tidy output
-$ clang-tidy -p compile_commands.json --extra-arg=-std=c++17 src/talker.cpp src/listener.cpp
+$ clang-tidy -p compile_commands.json --extra-arg=-std=c++17 src/talker.cpp src/listener.cpp ; echo "Exit code: $?"
 ```

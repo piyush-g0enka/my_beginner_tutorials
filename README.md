@@ -3,10 +3,11 @@
 
 'beginner_tutorials' package created as part of ROS2 programming assignments.
 
-In the ros_services_logging_launch branch we implement code for ros services, logging, parameterisation and launch files.
+In the ros_tf2_unitTest_bagFiles branch we implement code for TF2 transforms, unit testing in ROS2 and running bag files.
 
 Here, the talker node publishes a string to chatter topic whose publish frequency can be set via command line argument to launch file.
 The talker node also contains a service which changes the value of the string being published.
+The talker also publishes a static TF transform between /world and /talk frames.
 
 The listener node outputs the string in the chatter with different log levels.
 
@@ -25,7 +26,7 @@ The listener node outputs the string in the chatter with different log levels.
 $ colcon build --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 ```
 
-#### Run package
+#### Run the package
 
 ##### Launch file
 ```bash

@@ -3,12 +3,12 @@
 
 'beginner_tutorials' package created as part of ROS2 programming assignments.
 
-<!-- In the ros_services_logging_launch branch we implement code for ros services, logging, parameterisation and launch files.
+In the ros_services_logging_launch branch we implement code for ros services, logging, parameterisation and launch files.
 
 Here, the talker node publishes a string to chatter topic whose publish frequency can be set via command line argument to launch file.
 The talker node also contains a service which changes the value of the string being published.
 
-The listener node outputs the string in the chatter with different log levels. -->
+The listener node outputs the string in the chatter with different log levels.
 
 #### Dependencies
 1. ROS2 Humble
@@ -65,14 +65,10 @@ $ ros2 service call /string_changer example_interfaces/srv/SetBool "data: true"
 
 
 
-
-
-
-
 #### Cpplint
 ```bash
 # Run below command from package directory
-$ cpplint --filter=-build/c++11,+build/c++17,-build/namespaces,-build/include_order src/talker.cpp src/listener.cpp 
+$ cpplint --filter=-build/c++11,+build/c++17,-build/namespaces,-build/include_order src/talker.cpp src/listener.cpp src/test_talker.cpp
 ```
 
 
@@ -81,6 +77,6 @@ $ cpplint --filter=-build/c++11,+build/c++17,-build/namespaces,-build/include_or
 # Create symbolic link to compile_commands.json in package directory
 $ ln -s ~/<path-to-ros2_ws>/build/beginner_tutorials/compile_commands.json ~/<path-to-ros2_ws>/src/beginner_tutorials
 
-# Get clang-tidy output
-$ clang-tidy -p compile_commands.json --extra-arg=-std=c++17 src/talker.cpp src/listener.cpp ; echo "Exit code: $?"
+# Get clang-tidy output - Run from package directory
+$ clang-tidy -p compile_commands.json --extra-arg=-std=c++17 src/talker.cpp src/listener.cpp src/test_talker.cpp ; echo "Exit code: $?"
 ```

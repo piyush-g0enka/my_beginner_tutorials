@@ -3,8 +3,8 @@
 /**
  * @file talker.cpp
  * @author Piyush Goenka
- * @brief The talker node publishes a string to the chatter topic. It also spins
- * a service which when called changes the string contents.
+ * @brief The talker node publishes a string to the chatter topic and publishes static TF transform between /world and /talk frames.
+ * It also spins a service which when called changes the string contents.
  * @version 1.0
  */
 
@@ -25,19 +25,18 @@ using namespace std::chrono_literals;
 /**
  * @brief Talker node class
  *
- * @details The talker node publishes a string to the chatter topic. It also
- * spins a service which when called changes the string contents.
+ * @details The talker node publishes a string to the chatter topic and publishes static TF transform between /world and /talk frames.
+ * It also spins a service which when called changes the string contents.
  */
 
 class MinimalPublisher : public rclcpp::Node {
  public:
   MinimalPublisher() : Node("minimal_publisher") {
-
-    tf_static_broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
+    tf_static_br = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
     // Publish static transforms once at startup
     this->make_transforms();
 
-
+    // create publisher to chatter
     publisher_ = this->create_publisher<std_msgs::msg::String>("chatter", 10);
 
     // Declare the 'publish_frequency' parameter with a default value of 10.0 Hz
@@ -95,9 +94,10 @@ class MinimalPublisher : public rclcpp::Node {
     publisher_->publish(message);
   }
 
-
-  void make_transforms()
-  {
+/**
+   * @brief Function which defines the transform between /world parent and /talk child
+   */
+  void make_transforms() {
     geometry_msgs::msg::TransformStamped t;
 
     t.header.stamp = this->get_clock()->now();
@@ -108,16 +108,16 @@ class MinimalPublisher : public rclcpp::Node {
     t.transform.translation.y = 1.8;
     t.transform.translation.z = 0.7;
     tf2::Quaternion q;
-    q.setRPY(0.1,0.3,0.8);
+    q.setRPY(0.1, 0.3, 0.8);
     t.transform.rotation.x = q.x();
     t.transform.rotation.y = q.y();
     t.transform.rotation.z = q.z();
     t.transform.rotation.w = q.w();
 
-    tf_static_broadcaster_->sendTransform(t);
+    tf_static_br->sendTransform(t);
   }
 
-    std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_static_broadcaster_;
+    std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_static_br;
   rclcpp::Service<example_interfaces::srv::SetBool>::SharedPtr service_;
 
   rclcpp::TimerBase::SharedPtr timer_;

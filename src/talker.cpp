@@ -3,8 +3,8 @@
 /**
  * @file talker.cpp
  * @author Piyush Goenka
- * @brief The talker node publishes a string to the chatter topic. It also spins
- * a service which when called changes the string contents.
+ * @brief The talker node publishes a string to the chatter topic and publishes static TF transform between /world and /talk frames.
+ * It also spins a service which when called changes the string contents.
  * @version 1.0
  */
 
@@ -15,19 +15,28 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <catch2/catch.hpp>
+#include "geometry_msgs/msg/transform_stamped.hpp"
+#include "tf2/LinearMath/Quaternion.h"
+#include "tf2_ros/static_transform_broadcaster.h"
 
 using namespace std::chrono_literals;
 
 /**
  * @brief Talker node class
  *
- * @details The talker node publishes a string to the chatter topic. It also
- * spins a service which when called changes the string contents.
+ * @details The talker node publishes a string to the chatter topic and publishes static TF transform between /world and /talk frames.
+ * It also spins a service which when called changes the string contents.
  */
 
 class MinimalPublisher : public rclcpp::Node {
  public:
   MinimalPublisher() : Node("minimal_publisher") {
+    tf_static_br = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
+    // Publish static transforms once at startup
+    this->make_transforms();
+
+    // create publisher to chatter
     publisher_ = this->create_publisher<std_msgs::msg::String>("chatter", 10);
 
     // Declare the 'publish_frequency' parameter with a default value of 10.0 Hz
@@ -47,6 +56,9 @@ class MinimalPublisher : public rclcpp::Node {
         std::chrono::milliseconds(static_cast<int>(1000 / publish_frequency)),
         std::bind(&MinimalPublisher::timer_callback, this));
   }
+
+
+
 
   /**
    * @brief Callback function for the service which sets the string value to be
@@ -68,6 +80,7 @@ class MinimalPublisher : public rclcpp::Node {
                        "Warning! String changed to '" << chatter_string << "'");
   }
 
+
  private:
   /**
    * @brief Callback of a timer which is used to publish string data onto
@@ -81,6 +94,30 @@ class MinimalPublisher : public rclcpp::Node {
     publisher_->publish(message);
   }
 
+/**
+   * @brief Function which defines the transform between /world parent and /talk child
+   */
+  void make_transforms() {
+    geometry_msgs::msg::TransformStamped t;
+
+    t.header.stamp = this->get_clock()->now();
+    t.header.frame_id = "world";
+    t.child_frame_id = "talk";
+
+    t.transform.translation.x = 1.0;
+    t.transform.translation.y = 1.8;
+    t.transform.translation.z = 0.7;
+    tf2::Quaternion q;
+    q.setRPY(0.1, 0.3, 0.8);
+    t.transform.rotation.x = q.x();
+    t.transform.rotation.y = q.y();
+    t.transform.rotation.z = q.z();
+    t.transform.rotation.w = q.w();
+
+    tf_static_br->sendTransform(t);
+  }
+
+    std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_static_br;
   rclcpp::Service<example_interfaces::srv::SetBool>::SharedPtr service_;
 
   rclcpp::TimerBase::SharedPtr timer_;

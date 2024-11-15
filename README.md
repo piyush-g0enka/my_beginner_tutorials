@@ -26,7 +26,7 @@ The listener node outputs the string in the chatter with different log levels.
 $ colcon build --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 ```
 
-#### Run package
+#### Run the package
 
 ##### Launch file
 ```bash

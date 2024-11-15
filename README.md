@@ -30,7 +30,12 @@ $ colcon build --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 ##### Launch file
 ```bash
 # change publish_frequency parameter value to change /chatter frequency
-$ ros2 launch beginner_tutorials nodes.launch.py publish_frequency:=5.4
+# change record_bag paramter from 'true' to 'false' to not record a bag file for 15 seconds
+$ ros2 launch beginner_tutorials nodes.launch.py publish_frequency:=5.4 record_bag:=true
+
+# To record a bag file separately, run below launch file
+$ ros2 launch beginner_tutorials record_bag.launch.py record_bag:=true
+
 ```
 
 
@@ -41,8 +46,10 @@ $ ros2 launch beginner_tutorials nodes.launch.py publish_frequency:=5.4
 # The below test script checks for two conditions:
 # 1. Messages are being published on /chatter
 # 2. The message data is "I'm not set"
+
 $ ./build/beginner_tutorials/test_talker
 ```
+
 
 ##### Call a service that changes the string published to the chatter topic
 ```bash

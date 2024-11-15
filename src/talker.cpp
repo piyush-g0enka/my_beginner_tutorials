@@ -15,6 +15,10 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <catch2/catch.hpp>
+#include "geometry_msgs/msg/transform_stamped.hpp"
+#include "tf2/LinearMath/Quaternion.h"
+#include "tf2_ros/static_transform_broadcaster.h"
 
 using namespace std::chrono_literals;
 
@@ -28,6 +32,12 @@ using namespace std::chrono_literals;
 class MinimalPublisher : public rclcpp::Node {
  public:
   MinimalPublisher() : Node("minimal_publisher") {
+
+    tf_static_broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
+    // Publish static transforms once at startup
+    this->make_transforms();
+
+
     publisher_ = this->create_publisher<std_msgs::msg::String>("chatter", 10);
 
     // Declare the 'publish_frequency' parameter with a default value of 10.0 Hz
@@ -47,6 +57,9 @@ class MinimalPublisher : public rclcpp::Node {
         std::chrono::milliseconds(static_cast<int>(1000 / publish_frequency)),
         std::bind(&MinimalPublisher::timer_callback, this));
   }
+
+
+
 
   /**
    * @brief Callback function for the service which sets the string value to be
@@ -68,6 +81,7 @@ class MinimalPublisher : public rclcpp::Node {
                        "Warning! String changed to '" << chatter_string << "'");
   }
 
+
  private:
   /**
    * @brief Callback of a timer which is used to publish string data onto
@@ -81,6 +95,29 @@ class MinimalPublisher : public rclcpp::Node {
     publisher_->publish(message);
   }
 
+
+  void make_transforms()
+  {
+    geometry_msgs::msg::TransformStamped t;
+
+    t.header.stamp = this->get_clock()->now();
+    t.header.frame_id = "world";
+    t.child_frame_id = "talk";
+
+    t.transform.translation.x = 1.0;
+    t.transform.translation.y = 1.8;
+    t.transform.translation.z = 0.7;
+    tf2::Quaternion q;
+    q.setRPY(0.1,0.3,0.8);
+    t.transform.rotation.x = q.x();
+    t.transform.rotation.y = q.y();
+    t.transform.rotation.z = q.z();
+    t.transform.rotation.w = q.w();
+
+    tf_static_broadcaster_->sendTransform(t);
+  }
+
+    std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_static_broadcaster_;
   rclcpp::Service<example_interfaces::srv::SetBool>::SharedPtr service_;
 
   rclcpp::TimerBase::SharedPtr timer_;

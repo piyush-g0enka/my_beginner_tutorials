@@ -1,14 +1,14 @@
-## ROS2 Assignment 2 - Services/Logging/Launch files
+## ROS2 Assignment 3 - TF/Unit-Test/Bag-Files
 
 
 'beginner_tutorials' package created as part of ROS2 programming assignments.
 
-In the ros_services_logging_launch branch we implement code for ros services, logging, parameterisation and launch files.
+<!-- In the ros_services_logging_launch branch we implement code for ros services, logging, parameterisation and launch files.
 
 Here, the talker node publishes a string to chatter topic whose publish frequency can be set via command line argument to launch file.
 The talker node also contains a service which changes the value of the string being published.
 
-The listener node outputs the string in the chatter with different log levels.
+The listener node outputs the string in the chatter with different log levels. -->
 
 #### Dependencies
 1. ROS2 Humble
@@ -33,6 +33,17 @@ $ colcon build --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 $ ros2 launch beginner_tutorials nodes.launch.py publish_frequency:=5.4
 ```
 
+
+##### Run catch2 test before calling the service
+
+```bash
+# Run below command from the ros2_ws directory
+# The below test script checks for two conditions:
+# 1. Messages are being published on /chatter
+# 2. The message data is "I'm not set"
+$ ./build/beginner_tutorials/test_talker
+```
+
 ##### Call a service that changes the string published to the chatter topic
 ```bash
 
@@ -44,6 +55,12 @@ $ ros2 service call /string_changer example_interfaces/srv/SetBool "data: false"
 # To change string to "I'm publishing TRUE" run below service call
 $ ros2 service call /string_changer example_interfaces/srv/SetBool "data: true"
 ```
+
+
+
+
+
+
 
 #### Cpplint
 ```bash
